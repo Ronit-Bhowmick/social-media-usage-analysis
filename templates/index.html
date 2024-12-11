@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile Form</title>
+    <!-- Bootstrap 4/5 CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Student Profile Form</h2>
+        <form action="/submit" method="POST">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="class_roll">Class Roll Number</label>
+                <input type="text" class="form-control" id="class_roll" name="class_roll" required>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" class="form-control" id="age" name="age" required>
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select class="form-control" id="gender" name="gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="major">Major</label>
+                <input type="text" class="form-control" id="major" name="major" required>
+            </div>
+
+            <div class="form-group">
+                <label for="social_media_time">Time spent on Social Media (hours per day)</label>
+                <input type="number" step="0.1" class="form-control" id="social_media_time" name="social_media_time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="class_participation">Class Participation</label>
+                <select class="form-control" id="class_participation" name="class_participation" required>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="in_club">Are you in any club?</label>
+                <select class="form-control" id="in_club" name="in_club" required>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="library_visits">Library Visits per Week</label>
+                <input type="number" class="form-control" id="library_visits" name="library_visits" required>
+            </div>
+
+            <div class="form-group">
+                <label for="sleep_duration">Sleep Duration (hours)</label>
+                <input type="number" class="form-control" id="sleep_duration" name="sleep_duration" required>
+            </div>
+
+            <div class="form-group">
+                <label for="sleep_time">Time of Sleep</label>
+                <input type="time" class="form-control" id="sleep_time" name="sleep_time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="wake_time">Time Waking Up</label>
+                <input type="time" class="form-control" id="wake_time" name="wake_time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="study_hours">Study Hours per Week</label>
+                <input type="number" class="form-control" id="study_hours" name="study_hours" required>
+            </div>
+
+            <div class="form-group">
+                <label for="current_gpa">Current GPA</label>
+                <input type="number" step="0.01" class="form-control" id="current_gpa" name="current_gpa" required>
+            </div>
+
+            <div class="form-group">
+                <label for="device_used">Device Used Most Frequently</label>
+                <input type="text" class="form-control" id="device_used" name="device_used" required>
+            </div>
+
+            <div class="form-group">
+                <label for="social_media_app">Which Social Media App is Used Most?</label>
+                <input type="text" class="form-control" id="social_media_app" name="social_media_app" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
