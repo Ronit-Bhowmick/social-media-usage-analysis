@@ -12,13 +12,17 @@ app.config['DB_PASSWORD'] = os.getenv('DB_PASSWORD', 'a9wRl3FU2krAeMWy9x5Jm4vcHU
 
 # PostgreSQL connection
 def get_db_connection():
-    conn = psycopg2.connect(
-        host=app.config['DB_HOST'],
-        database=app.config['DB_NAME'],
-        user=app.config['DB_USER'],
-        password=app.config['DB_PASSWORD']
-    )
-    return conn
+    try:
+        conn = psycopg2.connect(
+            host=app.config['DB_HOST'],
+            database=app.config['DB_NAME'],
+            user=app.config['DB_USER'],
+            password=app.config['DB_PASSWORD']
+        )
+        return conn
+    except Exception as e:
+        print(f"Error connecting to the database: {e}")
+        return None
 
 @app.route('/')
 def index():
