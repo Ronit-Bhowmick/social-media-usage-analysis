@@ -24,6 +24,24 @@ def get_db_connection():
         print(f"Error connecting to the database: {e}")
         return None
 
+# Check if the 'student_profile' table exists in the database
+def check_table_exists():
+    conn = get_db_connection()
+    if conn:
+        cursor = conn.cursor()
+        try:
+            cursor.execute("SELECT to_regclass('public.student_profile');")
+            result = cursor.fetchone()
+            if result[0] is None:
+                print("Table does not exist!")
+            else:
+                print("Table exists!")
+        except Exception as e:
+            print(f"Error checking table: {e}")
+        finally:
+            cursor.close()
+            conn.close()
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -51,19 +69,25 @@ def submit():
         
         # Prepare SQL query to insert data into the database
         conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute('''
-            INSERT INTO student_profile (name, class_roll, age, gender, major, social_media_time, class_participation, 
-                                       in_club, library_visits, sleep_duration, sleep_time, wake_time, study_hours, current_gpa, device_used, social_media_app)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-        ''', (name, class_roll, age, gender, major, social_media_time, class_participation, in_club, library_visits, 
-              sleep_duration, sleep_time, wake_time, study_hours, current_gpa, device_used, social_media_app))
-        conn.commit()
-        cursor.close()
-        conn.close()
-
+        if conn:
+            cursor = conn.cursor()
+            try:
+                cursor.execute('''
+                    INSERT INTO student_profile (name, class_roll, age, gender, major, social_media_time, class_participation, 
+                                               in_club, library_visits, sleep_duration, sleep_time, wake_time, study_hours, current_gpa, device_used, social_media_app)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                ''', (name, class_roll, age, gender, major, social_media_time, class_participation, in_club, library_visits, 
+                      sleep_duration, sleep_time, wake_time, study_hours, current_gpa, device_used, social_media_app))
+                conn.commit()
+            except Exception as e:
+                print(f"Error inserting data: {e}")
+            finally:
+                cursor.close()
+                conn.close()
+        
         # Redirect to a confirmation page or back to home
         return redirect(url_for('index'))
 
 if __name__ == '__main__':
+    check_table_exists()  # Ensure table exists before starting the app
     app.run(host='0.0.0.0', port=5000)
