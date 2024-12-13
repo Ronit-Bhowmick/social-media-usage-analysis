@@ -1,18 +1,24 @@
 from flask import Flask, render_template, request, redirect, url_for
-from flask_mysqldb import MySQL
+import psycopg2
 import os
 
 app = Flask(__name__)
 
-# Use Heroku's environment variables to connect to the database
-app.config['MYSQL_HOST'] = os.environ.get('CLEARDB_DATABASE_URL', 'localhost') 
-app.config['MYSQL_USER'] = os.environ.get('CLEARDB_USER', 'root')
-app.config['MYSQL_PASSWORD'] = os.environ.get('CLEARDB_PASSWORD', 'your_password')
-app.config['MYSQL_DB'] = os.environ.get('CLEARDB_DATABASE', 'social_media_usage_data')
+# Use environment variables to set PostgreSQL config
+app.config['DB_HOST'] = os.getenv('DB_HOST', 'dpg-ctdsv6lumphs73988rm0-a')  # PostgreSQL host (Render will provide this)
+app.config['DB_NAME'] = os.getenv('DB_NAME', 'social_media_usage_data')  # Database name
+app.config['DB_USER'] = os.getenv('DB_USER', 'ronitbhowmick')  # PostgreSQL username
+app.config['DB_PASSWORD'] = os.getenv('DB_PASSWORD', 'a9wRl3FU2krAeMWy9x5Jm4vcHU8AMJ5w')  # PostgreSQL password
 
-mysql = MySQL(app)
-
-mysql = MySQL(app)
+# PostgreSQL connection
+def get_db_connection():
+    conn = psycopg2.connect(
+        host=app.config['DB_HOST'],
+        database=app.config['DB_NAME'],
+        user=app.config['DB_USER'],
+        password=app.config['DB_PASSWORD']
+    )
+    return conn
 
 @app.route('/')
 def index():
@@ -22,8 +28,8 @@ def index():
 def submit():
     if request.method == 'POST':
         # Retrieve data from form
-        name = request.form['name']
         class_roll = request.form['class_roll']
+        name = request.form['name']
         age = request.form['age']
         gender = request.form['gender']
         major = request.form['major']
@@ -40,14 +46,17 @@ def submit():
         social_media_app = request.form['social_media_app']
         
         # Prepare SQL query to insert data into the database
-        cursor = mysql.connection.cursor()
-        cursor.execute('''INSERT INTO student_profile (name, class_roll, age, gender, major, social_media_time, class_participation, 
-                        in_club, library_visits, sleep_duration, sleep_time, wake_time, study_hours, current_gpa, device_used, social_media_app)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
-                        (name, class_roll, age, gender, major, social_media_time, class_participation, in_club, library_visits, 
-                         sleep_duration, sleep_time, wake_time, study_hours, current_gpa, device_used, social_media_app))
-        mysql.connection.commit()
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('''
+            INSERT INTO student_profile (name, class_roll, age, gender, major, social_media_time, class_participation, 
+                                       in_club, library_visits, sleep_duration, sleep_time, wake_time, study_hours, current_gpa, device_used, social_media_app)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+        ''', (name, class_roll, age, gender, major, social_media_time, class_participation, in_club, library_visits, 
+              sleep_duration, sleep_time, wake_time, study_hours, current_gpa, device_used, social_media_app))
+        conn.commit()
         cursor.close()
+        conn.close()
 
         # Redirect to a confirmation page or back to home
         return redirect(url_for('index'))
