@@ -73,7 +73,7 @@ def submit():
             cursor = conn.cursor()
             try:
                 cursor.execute('''
-                    INSERT INTO student_profile (name, class_roll, age, gender, major, social_media_time, class_participation, 
+                    INSERT INTO student_profile (class_roll, name, age, gender, major, social_media_time, class_participation, 
                                                in_club, library_visits, sleep_duration, sleep_time, wake_time, study_hours, current_gpa, device_used, social_media_app)
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 ''', (name, class_roll, age, gender, major, social_media_time, class_participation, in_club, library_visits, 
